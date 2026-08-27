@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}
+Order | Iswarram Kozhi Pannai
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <h1>Place Your Order</h1>
+
+    <p>
+        Fill in your details and submit your order
+    </p>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="form-box">
+
+            <form method="POST"
+                  action="{{ url_for('order') }}">
+
+                <div class="form-group">
+
+                    <label>Your Name</label>
+
+                    <input type="text"
+                           name="name"
+                           required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Phone Number</label>
+
+                    <input type="tel"
+                           name="phone"
+                           required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Select Product</label>
+
+                    <select name="product" required>
+
+                        <option value="">
+                            Select Product
+                        </option>
+
+                        <option value="Boneless Chicken">
+                            Boneless Chicken
+                        </option>
+
+                        <option value="Wholesale Chicken">
+                            Wholesale Chicken
+                        </option>
+
+                        <option value="Bulk Order">
+                            Bulk Order
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Quantity</label>
+
+                    <input type="text"
+                           name="quantity"
+                           placeholder="Example: 5 KG"
+                           required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Address</label>
+
+                    <textarea name="address"
+                              required></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Order Type</label>
+
+                    <select name="order_type" required>
+
+                        <option value="">
+                            Select Order Type
+                        </option>
+
+                        <option value="Home Delivery">
+                            Home Delivery
+                        </option>
+
+                        <option value="Pickup">
+                            Pickup
+                        </option>
+
+                        <option value="Wholesale">
+                            Wholesale
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Additional Message</label>
+
+                    <textarea name="message"
+                              placeholder="Any special request?"></textarea>
+
+                </div>
+
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Submit Order
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}
+About Us | Iswarram Kozhi Pannai
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <h1>About Us</h1>
+
+    <p>
+        Learn more about Iswarram Kozhi Pannai
+    </p>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="about-grid">
+
+            <div class="about-image">
+
+                <img src="{{ url_for('static', filename='images/farm2.jpeg') }}"
+                     alt="Iswarram Kozhi Pannai">
+
+            </div>
+
+
+            <div class="about-text">
+
+                <h2>Quality You Can Trust</h2>
+
+                <p>
+                    Welcome to Iswarram Kozhi Pannai.
+                    We provide fresh and quality chicken
+                    for our customers.
+                </p>
+
+                <p>
+                    Our goal is to provide healthy chicken
+                    with excellent service and customer
+                    satisfaction.
+                </p>
+
+                <ul class="feature-list">
+
+                    <li>✅ Fresh and healthy chicken</li>
+
+                    <li>✅ Wholesale orders available</li>
+
+                    <li>✅ Bulk orders accepted</li>
+
+                    <li>✅ Home delivery available</li>
+
+                    <li>✅ Pre-order facility</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

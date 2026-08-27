@@ -1,0 +1,461 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fffaf2;
+    color: #292929;
+    line-height: 1.6;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    width: 100%;
+    background: #17210f;
+    color: white;
+    padding: 18px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+}
+
+.logo {
+    color: #f5c542;
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #f5c542;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 70px 7%;
+    background:
+        linear-gradient(rgba(18, 27, 12, 0.70), rgba(18, 27, 12, 0.70)),
+        url("/static/images/farm1.jpeg");
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    max-width: 850px;
+    text-align: center;
+    color: white;
+}
+
+.hero-content .tag {
+    display: inline-block;
+    background: #f5c542;
+    color: #17210f;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(40px, 6vw, 75px);
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.hero h1 span {
+    color: #f5c542;
+}
+
+.hero p {
+    font-size: 19px;
+    max-width: 700px;
+    margin: auto;
+    color: #f5f5f5;
+}
+
+.buttons {
+    margin-top: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 6px;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background: #f5c542;
+    color: #17210f;
+}
+
+.btn-primary:hover {
+    background: white;
+    transform: translateY(-3px);
+}
+
+.btn-dark {
+    background: #17210f;
+    color: white;
+}
+
+.btn-dark:hover {
+    background: #30451e;
+    transform: translateY(-3px);
+}
+
+/* ================= GENERAL ================= */
+
+.container {
+    width: 86%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.section {
+    padding: 80px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title h2 {
+    font-size: 40px;
+    color: #17210f;
+    margin-bottom: 10px;
+}
+
+.section-title p {
+    color: #777;
+}
+
+/* ================= PAGE HEADER ================= */
+
+.page-header {
+    padding: 90px 20px;
+    text-align: center;
+    color: white;
+    background:
+        linear-gradient(rgba(20,30,12,.72), rgba(20,30,12,.72)),
+        url("/static/images/farm2.jpeg");
+    background-size: cover;
+    background-position: center;
+}
+
+.page-header h1 {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.page-header p {
+    font-size: 18px;
+}
+
+/* ================= ABOUT ================= */
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.about-image img {
+    width: 100%;
+    height: 430px;
+    object-fit: cover;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.18);
+}
+
+.about-text h2 {
+    font-size: 38px;
+    color: #17210f;
+    margin-bottom: 20px;
+}
+
+.about-text p {
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.feature-list {
+    list-style: none;
+    margin-top: 25px;
+}
+
+.feature-list li {
+    margin: 13px 0;
+    font-weight: 600;
+}
+
+/* ================= CARDS ================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+.card {
+    background: white;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,.10);
+    transition: .3s;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 35px rgba(0,0,0,.16);
+}
+
+.card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 25px;
+}
+
+.card-content h3 {
+    color: #17210f;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    color: #777;
+}
+
+/* ================= SERVICES ================= */
+
+.service-card {
+    text-align: center;
+    padding: 35px 25px;
+}
+
+.service-icon {
+    width: 75px;
+    height: 75px;
+    margin: auto auto 20px;
+    border-radius: 50%;
+    background: #f5c542;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+}
+
+/* ================= GALLERY ================= */
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.gallery-item {
+    overflow: hidden;
+    border-radius: 20px;
+    height: 300px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.12);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: .5s;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.08);
+}
+
+/* ================= ORDER FORM ================= */
+
+.form-box {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.12);
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    font-size: 15px;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #f5c542;
+}
+
+/* ================= CONTACT ================= */
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.contact-card {
+    background: white;
+    padding: 35px 25px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.09);
+}
+
+.contact-card h3 {
+    margin: 15px 0 8px;
+    color: #17210f;
+}
+
+.contact-card p {
+    color: #777;
+}
+
+/* ================= OFFER ================= */
+
+.offer {
+    background: #17210f;
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.offer h2 {
+    color: #f5c542;
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+/* ================= FOOTER ================= */
+
+.footer {
+    background: #10150b;
+    color: #ccc;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.footer h3 {
+    color: #f5c542;
+    margin-bottom: 8px;
+}
+
+/* ================= FLASH ================= */
+
+.flash {
+    width: 90%;
+    max-width: 800px;
+    margin: 25px auto;
+    padding: 15px;
+    background: #dff5d8;
+    color: #24551b;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 850px) {
+
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 14px;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        min-height: 75vh;
+    }
+
+    .page-header h1 {
+        font-size: 38px;
+    }
+}

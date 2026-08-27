@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}
+Contact | Iswarram Kozhi Pannai
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <h1>Contact Us</h1>
+
+    <p>
+        We are happy to serve you
+    </p>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="contact-grid">
+
+            <div class="contact-card">
+
+                <div class="service-icon">📞</div>
+
+                <h3>Phone</h3>
+
+                <p>
+                    Contact us for orders and enquiries.
+                </p>
+
+            </div>
+
+
+            <div class="contact-card">
+
+                <div class="service-icon">📍</div>
+
+                <h3>Location</h3>
+
+                <p>
+                    Tiruvaiyaru,<br>
+                    Thanjavur District
+                </p>
+
+            </div>
+
+
+            <div class="contact-card">
+
+                <div class="service-icon">🕐</div>
+
+                <h3>Opening Hours</h3>
+
+                <p>
+                    Morning 7:00 AM<br>
+                    to<br>
+                    Evening 5:00 PM
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div style="text-align:center; margin-top:50px;">
+
+            <a href="{{ url_for('order') }}"
+               class="btn btn-primary">
+                Place Your Order
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

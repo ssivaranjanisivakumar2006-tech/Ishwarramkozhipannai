@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}
+Products | Iswarram Kozhi Pannai
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <h1>Our Products</h1>
+
+    <p>
+        Fresh chicken products for every need
+    </p>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="cards">
+
+            <div class="card">
+
+                <img src="{{ url_for('static', filename='images/farm1.jpeg') }}">
+
+                <div class="card-content">
+
+                    <h3>Boneless Chicken</h3>
+
+                    <p>
+                        Fresh and quality boneless chicken
+                        suitable for delicious home cooking.
+                    </p>
+
+                    <a href="{{ url_for('order') }}"
+                       class="btn btn-primary">
+                        Order Now
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <img src="{{ url_for('static', filename='images/farm2.jpeg') }}">
+
+                <div class="card-content">
+
+                    <h3>Wholesale Chicken</h3>
+
+                    <p>
+                        Quality chicken available for
+                        wholesale customers and businesses.
+                    </p>
+
+                    <a href="{{ url_for('order') }}"
+                       class="btn btn-primary">
+                        Order Now
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <img src="{{ url_for('static', filename='images/farm3.jpeg') }}">
+
+                <div class="card-content">
+
+                    <h3>Bulk Orders</h3>
+
+                    <p>
+                        Large quantity chicken orders for
+                        functions, shops and businesses.
+                    </p>
+
+                    <a href="{{ url_for('order') }}"
+                       class="btn btn-primary">
+                        Order Now
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

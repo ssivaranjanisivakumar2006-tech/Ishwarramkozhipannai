@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gallery | Iswarram Kozhi Pannai
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <h1>Our Gallery</h1>
+
+    <p>
+        A glimpse of our poultry farm
+    </p>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="gallery">
+
+            <div class="gallery-item">
+
+                <img src="{{ url_for('static', filename='images/farm1.jpeg') }}"
+                     alt="Poultry Farm">
+
+            </div>
+
+
+            <div class="gallery-item">
+
+                <img src="{{ url_for('static', filename='images/farm2.jpeg') }}"
+                     alt="Chicken Farm">
+
+            </div>
+
+
+            <div class="gallery-item">
+
+                <img src="{{ url_for('static', filename='images/farm3.jpeg') }}"
+                     alt="Iswarram Kozhi Pannai">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

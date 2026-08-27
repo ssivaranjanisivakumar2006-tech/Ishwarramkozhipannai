@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home | Iswarram Kozhi Pannai
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="tag">🐔 Fresh & Healthy Chicken</span>
+
+        <h1>
+            Welcome to
+            <span>Iswarram Kozhi Pannai</span>
+        </h1>
+
+        <p>
+            Fresh, healthy and quality chicken directly from
+            our trusted poultry farm.
+        </p>
+
+        <div class="buttons">
+
+            <a href="{{ url_for('products') }}"
+               class="btn btn-primary">
+                View Products
+            </a>
+
+            <a href="{{ url_for('order') }}"
+               class="btn btn-dark">
+                Order Now
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <h2>Why Choose Us?</h2>
+
+            <p>
+                Quality and freshness you can trust.
+            </p>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/farm1.jpeg') }}">
+
+                <div class="card-content">
+                    <h3>Fresh Chicken</h3>
+
+                    <p>
+                        Fresh and healthy chicken carefully
+                        selected for our customers.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/farm2.jpeg') }}">
+
+                <div class="card-content">
+                    <h3>Trusted Quality</h3>
+
+                    <p>
+                        We focus on cleanliness, quality and
+                        customer satisfaction.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/farm3.jpeg') }}">
+
+                <div class="card-content">
+                    <h3>Bulk Orders</h3>
+
+                    <p>
+                        Wholesale and bulk chicken orders are
+                        available.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="offer">
+
+    <h2>Special Offer 🥚</h2>
+
+    <p>
+        Buy 1 KG Chicken and Get 5 Eggs Free!
+    </p>
+
+    <br>
+
+    <a href="{{ url_for('order') }}"
+       class="btn btn-primary">
+        Order Today
+    </a>
+
+</section>
+
+{% endblock %}
