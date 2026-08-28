@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 import os
-import smtplib
-from email.message import EmailMessage
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -52,87 +50,6 @@ def create_database():
 
 # Create database when application starts
 create_database()
-
-
-# =========================
-# SEND ORDER EMAIL
-# =========================
-
-def send_order_email(
-    name,
-    phone,
-    product,
-    quantity,
-    address,
-    order_type,
-    message
-):
-
-    sender_email = os.getenv("MAIL_USERNAME")
-    sender_password = os.getenv("MAIL_PASSWORD")
-    receiver_email = os.getenv("MAIL_RECEIVER")
-
-    if not sender_email or not sender_password or not receiver_email:
-        print("Email environment variables are missing.")
-        return False
-
-    email = EmailMessage()
-
-    email["Subject"] = "New Order - Iswarram Kozhi Pannai"
-    email["From"] = sender_email
-    email["To"] = receiver_email
-
-    email.set_content(f"""
-NEW ORDER RECEIVED
-==================
-
-Customer Name:
-{name}
-
-Phone Number:
-{phone}
-
-Product:
-{product}
-
-Quantity:
-{quantity}
-
-Address:
-{address}
-
-Order Type:
-{order_type}
-
-Customer Message:
-{message}
-
-==================
-Iswarram Kozhi Pannai
-""")
-
-    try:
-
-        with smtplib.SMTP_SSL(
-            "smtp.gmail.com",
-            465,
-            timeout=10
-        ) as smtp:
-
-            smtp.login(
-                sender_email,
-                sender_password
-            )
-
-            smtp.send_message(email)
-
-        print("Order email sent successfully.")
-        return True
-
-    except Exception as e:
-
-        print("Email Error:", e)
-        return False
 
 
 # =========================
@@ -215,7 +132,7 @@ def order():
 
 
             # =========================
-            # SAVE ORDER
+            # SAVE ORDER TO DATABASE
             # =========================
 
             conn = get_db_connection()
@@ -247,35 +164,13 @@ def order():
 
 
             # =========================
-            # SEND EMAIL
+            # SUCCESS MESSAGE
             # =========================
 
-            email_sent = send_order_email(
-                name,
-                phone,
-                product,
-                quantity,
-                address,
-                order_type,
-                message
+            flash(
+                "Order submitted successfully! "
+                "We received your order."
             )
-
-
-            if email_sent:
-
-                flash(
-                    "Order submitted successfully! "
-                    "We received your order."
-                )
-
-            else:
-
-                flash(
-                    "Order submitted successfully! "
-                    "We received your order, "
-                    "but email notification could not be sent."
-                )
-
 
             return redirect(url_for("order"))
 
