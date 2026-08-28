@@ -5,10 +5,11 @@ import smtplib
 from email.message import EmailMessage
 from dotenv import load_dotenv
 
-# Load .env file
+# Load .env
 load_dotenv()
 
 app = Flask(__name__)
+
 app.secret_key = "iswarram_kozhi_pannai_secret_key"
 
 DATABASE = "farm.db"
@@ -50,6 +51,10 @@ def create_database():
     conn.close()
 
 
+# Create database when Flask/Gunicorn starts
+create_database()
+
+
 # =========================
 # SEND ORDER EMAIL
 # =========================
@@ -68,17 +73,20 @@ def send_order_email(
     sender_password = os.getenv("MAIL_PASSWORD")
     receiver_email = os.getenv("MAIL_RECEIVER")
 
+    # Check email settings
+    if not sender_email or not sender_password or not receiver_email:
+        print("Email environment variables are missing.")
+        return False
+
     email = EmailMessage()
 
     email["Subject"] = "New Order - Iswarram Kozhi Pannai"
-
     email["From"] = sender_email
-
     email["To"] = receiver_email
 
     email.set_content(f"""
-🐔 NEW ORDER RECEIVED
-=====================
+NEW ORDER RECEIVED
+==================
 
 Customer Name:
 {name}
@@ -101,7 +109,7 @@ Order Type:
 Customer Message:
 {message}
 
-=====================
+==================
 Iswarram Kozhi Pannai
 """)
 
@@ -119,12 +127,12 @@ Iswarram Kozhi Pannai
 
             smtp.send_message(email)
 
+        print("Order email sent successfully.")
         return True
 
     except Exception as e:
 
         print("Email Error:", e)
-
         return False
 
 
@@ -134,7 +142,6 @@ Iswarram Kozhi Pannai
 
 @app.route("/")
 def home():
-
     return render_template("index.html")
 
 
@@ -144,7 +151,6 @@ def home():
 
 @app.route("/about")
 def about():
-
     return render_template("about.html")
 
 
@@ -154,7 +160,6 @@ def about():
 
 @app.route("/products")
 def products():
-
     return render_template("products.html")
 
 
@@ -164,7 +169,6 @@ def products():
 
 @app.route("/services")
 def services():
-
     return render_template("services.html")
 
 
@@ -174,7 +178,6 @@ def services():
 
 @app.route("/gallery")
 def gallery():
-
     return render_template("gallery.html")
 
 
@@ -187,28 +190,67 @@ def order():
 
     if request.method == "POST":
 
-        name = request.form["name"]
+        try:
 
-        phone = request.form["phone"]
+            name = request.form.get("name", "").strip()
+            phone = request.form.get("phone", "").strip()
+            product = request.form.get("product", "").strip()
+            quantity = request.form.get("quantity", "").strip()
+            address = request.form.get("address", "").strip()
+            order_type = request.form.get("order_type", "").strip()
+            message = request.form.get("message", "").strip()
 
-        product = request.form["product"]
+            # Check required fields
+            if not all([
+                name,
+                phone,
+                product,
+                quantity,
+                address,
+                order_type
+            ]):
 
-        quantity = request.form["quantity"]
-
-        address = request.form["address"]
-
-        order_type = request.form["order_type"]
-
-        message = request.form.get("message", "")
+                flash("Please fill in all required fields.")
+                return redirect(url_for("order"))
 
 
-        # Save order to database
+            # =========================
+            # SAVE ORDER TO DATABASE
+            # =========================
 
-        conn = get_db_connection()
+            conn = get_db_connection()
 
-        conn.execute("""
-            INSERT INTO orders
-            (
+            conn.execute("""
+                INSERT INTO orders
+                (
+                    name,
+                    phone,
+                    product,
+                    quantity,
+                    address,
+                    order_type,
+                    message
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (
+                name,
+                phone,
+                product,
+                quantity,
+                address,
+                order_type,
+                message
+            ))
+
+            conn.commit()
+            conn.close()
+
+
+            # =========================
+            # SEND EMAIL
+            # =========================
+
+            email_sent = send_order_email(
                 name,
                 phone,
                 product,
@@ -217,53 +259,36 @@ def order():
                 order_type,
                 message
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (
-            name,
-            phone,
-            product,
-            quantity,
-            address,
-            order_type,
-            message
-        ))
-
-        conn.commit()
-
-        conn.close()
 
 
-        # Send email notification
+            if email_sent:
 
-        email_sent = send_order_email(
-            name,
-            phone,
-            product,
-            quantity,
-            address,
-            order_type,
-            message
-        )
+                flash(
+                    "Order submitted successfully! "
+                    "We received your order."
+                )
+
+            else:
+
+                flash(
+                    "Order submitted successfully! "
+                    "Email notification could not be sent."
+                )
 
 
-        if email_sent:
+            return redirect(url_for("order"))
+
+
+        except Exception as e:
+
+            print("Order Error:", e)
 
             flash(
-                "Order submitted successfully! "
-                "We received your order."
+                "Something went wrong while submitting "
+                "your order. Please try again."
             )
 
-        else:
-
-            flash(
-                "Order saved successfully, "
-                "but email notification could not be sent."
-            )
-
-
-        return redirect(
-            url_for("order")
-        )
+            return redirect(url_for("order"))
 
 
     return render_template("order.html")
@@ -275,7 +300,6 @@ def order():
 
 @app.route("/contact")
 def contact():
-
     return render_template("contact.html")
 
 
@@ -284,8 +308,6 @@ def contact():
 # =========================
 
 if __name__ == "__main__":
-
-    create_database()
 
     app.run(
         debug=True
