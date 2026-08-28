@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 import os
 from dotenv import load_dotenv
+import resend
 
 load_dotenv()
 
@@ -10,6 +11,15 @@ app = Flask(__name__)
 app.secret_key = "iswarram_kozhi_pannai_secret_key"
 
 DATABASE = "farm.db"
+
+
+# =========================
+# RESEND SETUP
+# =========================
+
+resend.api_key = os.getenv("RESEND_API_KEY")
+
+MAIL_RECEIVER = os.getenv("MAIL_RECEIVER")
 
 
 # =========================
@@ -48,8 +58,75 @@ def create_database():
     conn.close()
 
 
-# Create database when application starts
 create_database()
+
+
+# =========================
+# SEND ORDER EMAIL
+# =========================
+
+def send_order_email(
+    name,
+    phone,
+    product,
+    quantity,
+    address,
+    order_type,
+    message
+):
+
+    try:
+
+        if not resend.api_key:
+            print("RESEND_API_KEY is missing.")
+            return False
+
+        if not MAIL_RECEIVER:
+            print("MAIL_RECEIVER is missing.")
+            return False
+
+        email_html = f"""
+        <h2>🐔 NEW ORDER RECEIVED</h2>
+
+        <hr>
+
+        <p><b>Customer Name:</b> {name}</p>
+
+        <p><b>Phone Number:</b> {phone}</p>
+
+        <p><b>Product:</b> {product}</p>
+
+        <p><b>Quantity:</b> {quantity}</p>
+
+        <p><b>Address:</b> {address}</p>
+
+        <p><b>Order Type:</b> {order_type}</p>
+
+        <p><b>Customer Message:</b> {message}</p>
+
+        <hr>
+
+        <p><b>Iswarram Kozhi Pannai</b></p>
+        """
+
+        params = {
+            "from": "onboarding@resend.dev",
+            "to": [MAIL_RECEIVER],
+            "subject": "🐔 New Order - Iswarram Kozhi Pannai",
+            "html": email_html
+        }
+
+        response = resend.Emails.send(params)
+
+        print("Resend Email Response:", response)
+
+        return True
+
+    except Exception as e:
+
+        print("Resend Email Error:", e)
+
+        return False
 
 
 # =========================
@@ -132,7 +209,7 @@ def order():
 
 
             # =========================
-            # SAVE ORDER TO DATABASE
+            # SAVE ORDER
             # =========================
 
             conn = get_db_connection()
@@ -164,13 +241,35 @@ def order():
 
 
             # =========================
-            # SUCCESS MESSAGE
+            # SEND EMAIL
             # =========================
 
-            flash(
-                "Order submitted successfully! "
-                "We received your order."
+            email_sent = send_order_email(
+                name,
+                phone,
+                product,
+                quantity,
+                address,
+                order_type,
+                message
             )
+
+
+            if email_sent:
+
+                flash(
+                    "Order submitted successfully! "
+                    "We received your order."
+                )
+
+            else:
+
+                flash(
+                    "Order submitted successfully! "
+                    "We received your order, "
+                    "but email notification could not be sent."
+                )
+
 
             return redirect(url_for("order"))
 
