@@ -5,7 +5,6 @@ import smtplib
 from email.message import EmailMessage
 from dotenv import load_dotenv
 
-# Load .env
 load_dotenv()
 
 app = Flask(__name__)
@@ -51,7 +50,7 @@ def create_database():
     conn.close()
 
 
-# Create database when Flask/Gunicorn starts
+# Create database when application starts
 create_database()
 
 
@@ -73,7 +72,6 @@ def send_order_email(
     sender_password = os.getenv("MAIL_PASSWORD")
     receiver_email = os.getenv("MAIL_RECEIVER")
 
-    # Check email settings
     if not sender_email or not sender_password or not receiver_email:
         print("Email environment variables are missing.")
         return False
@@ -117,7 +115,8 @@ Iswarram Kozhi Pannai
 
         with smtplib.SMTP_SSL(
             "smtp.gmail.com",
-            465
+            465,
+            timeout=10
         ) as smtp:
 
             smtp.login(
@@ -211,11 +210,12 @@ def order():
             ]):
 
                 flash("Please fill in all required fields.")
+
                 return redirect(url_for("order"))
 
 
             # =========================
-            # SAVE ORDER TO DATABASE
+            # SAVE ORDER
             # =========================
 
             conn = get_db_connection()
@@ -272,7 +272,8 @@ def order():
 
                 flash(
                     "Order submitted successfully! "
-                    "Email notification could not be sent."
+                    "We received your order, "
+                    "but email notification could not be sent."
                 )
 
 
@@ -281,11 +282,11 @@ def order():
 
         except Exception as e:
 
-            print("Order Error:", e)
+            print("ORDER ERROR:", e)
 
             flash(
-                "Something went wrong while submitting "
-                "your order. Please try again."
+                "Something went wrong. "
+                "Please try again."
             )
 
             return redirect(url_for("order"))
