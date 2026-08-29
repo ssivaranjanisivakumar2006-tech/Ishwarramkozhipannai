@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 import os
+from urllib.parse import quote
 from dotenv import load_dotenv
 import resend
 
@@ -12,14 +13,21 @@ app.secret_key = "iswarram_kozhi_pannai_secret_key"
 
 DATABASE = "farm.db"
 
-
 # =========================
-# RESEND SETUP
+# RESEND EMAIL SETUP
 # =========================
 
 resend.api_key = os.getenv("RESEND_API_KEY")
 
 MAIL_RECEIVER = os.getenv("MAIL_RECEIVER")
+
+# =========================
+# WHATSAPP SETUP
+# =========================
+
+# +91 98655 75588
+# WhatsApp number must be without + and spaces
+WHATSAPP_NUMBER = "919865575588"
 
 
 # =========================
@@ -27,8 +35,11 @@ MAIL_RECEIVER = os.getenv("MAIL_RECEIVER")
 # =========================
 
 def get_db_connection():
+
     conn = sqlite3.connect(DATABASE)
+
     conn.row_factory = sqlite3.Row
+
     return conn
 
 
@@ -55,6 +66,7 @@ def create_database():
     """)
 
     conn.commit()
+
     conn.close()
 
 
@@ -78,12 +90,17 @@ def send_order_email(
     try:
 
         if not resend.api_key:
+
             print("RESEND_API_KEY is missing.")
+
             return False
 
         if not MAIL_RECEIVER:
+
             print("MAIL_RECEIVER is missing.")
+
             return False
+
 
         email_html = f"""
         <h2>🐔 NEW ORDER RECEIVED</h2>
@@ -109,18 +126,26 @@ def send_order_email(
         <p><b>Iswarram Kozhi Pannai</b></p>
         """
 
+
         params = {
+
             "from": "onboarding@resend.dev",
+
             "to": [MAIL_RECEIVER],
+
             "subject": "🐔 New Order - Iswarram Kozhi Pannai",
+
             "html": email_html
+
         }
+
 
         response = resend.Emails.send(params)
 
         print("Resend Email Response:", response)
 
         return True
+
 
     except Exception as e:
 
@@ -135,6 +160,7 @@ def send_order_email(
 
 @app.route("/")
 def home():
+
     return render_template("index.html")
 
 
@@ -144,6 +170,7 @@ def home():
 
 @app.route("/about")
 def about():
+
     return render_template("about.html")
 
 
@@ -153,6 +180,7 @@ def about():
 
 @app.route("/products")
 def products():
+
     return render_template("products.html")
 
 
@@ -162,6 +190,7 @@ def products():
 
 @app.route("/services")
 def services():
+
     return render_template("services.html")
 
 
@@ -171,6 +200,7 @@ def services():
 
 @app.route("/gallery")
 def gallery():
+
     return render_template("gallery.html")
 
 
@@ -186,14 +216,24 @@ def order():
         try:
 
             name = request.form.get("name", "").strip()
+
             phone = request.form.get("phone", "").strip()
+
             product = request.form.get("product", "").strip()
+
             quantity = request.form.get("quantity", "").strip()
+
             address = request.form.get("address", "").strip()
+
             order_type = request.form.get("order_type", "").strip()
+
             message = request.form.get("message", "").strip()
 
-            # Check required fields
+
+            # =========================
+            # CHECK REQUIRED FIELDS
+            # =========================
+
             if not all([
                 name,
                 phone,
@@ -209,7 +249,7 @@ def order():
 
 
             # =========================
-            # SAVE ORDER
+            # SAVE ORDER TO DATABASE
             # =========================
 
             conn = get_db_connection()
@@ -237,6 +277,7 @@ def order():
             ))
 
             conn.commit()
+
             conn.close()
 
 
@@ -255,23 +296,75 @@ def order():
             )
 
 
+            # =========================
+            # CREATE WHATSAPP MESSAGE
+            # =========================
+
+            whatsapp_message = f"""
+🐔 *NEW ORDER - ISWARRAM KOZHI PANNAI*
+
+👤 Customer Name:
+{name}
+
+📞 Customer Phone:
+{phone}
+
+🍗 Product:
+{product}
+
+⚖️ Quantity:
+{quantity}
+
+📍 Address:
+{address}
+
+🚚 Order Type:
+{order_type}
+
+📝 Additional Message:
+{message}
+
+Please confirm this order.
+"""
+
+
+            # Convert message for WhatsApp
+
+            encoded_message = quote(whatsapp_message)
+
+
+            # WhatsApp URL
+
+            whatsapp_url = (
+                f"https://wa.me/"
+                f"{WHATSAPP_NUMBER}"
+                f"?text={encoded_message}"
+            )
+
+
+            # =========================
+            # SUCCESS MESSAGE
+            # =========================
+
             if email_sent:
 
                 flash(
                     "Order submitted successfully! "
-                    "We received your order."
+                    "Email notification sent. "
+                    "WhatsApp is opening."
                 )
 
             else:
 
                 flash(
-                    "Order submitted successfully! "
-                    "We received your order, "
-                    "but email notification could not be sent."
+                    "Order saved successfully. "
+                    "WhatsApp is opening."
                 )
 
 
-            return redirect(url_for("order"))
+            # Open WhatsApp
+
+            return redirect(whatsapp_url)
 
 
         except Exception as e:
@@ -295,6 +388,7 @@ def order():
 
 @app.route("/contact")
 def contact():
+
     return render_template("contact.html")
 
 
